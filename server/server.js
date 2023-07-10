@@ -23,6 +23,26 @@ const db = mysql.createConnection({
     database: "signup"
 })
 
+const verifyUser = (req, res, next) => {
+    const token = req.cookies.token;
+    if(!token) {
+        return res.json({Message: "We need token please provide it."})
+    } else {
+        jwt.verify(token, "our-jsonwebtoken-secret-key", (err, decoded) => {
+            if(err) {
+                return res.json({Message: "Authentication Error."})
+            } else {
+                req.name = decoded.name;
+                next();
+            }
+        })
+    }
+}
+
+app.get('/', verifyUser, (req, res) => {
+    return res.json({Status: "Success", name: req.name})
+})
+
 app.post('/login', (req, res) => {
     const sql = "SELECT * FROM login WHERE email = ? AND password = ?";
     db.query(sql, [req.body.email, req.body.password], (err, data) => {
