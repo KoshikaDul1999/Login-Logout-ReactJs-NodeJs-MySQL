@@ -7,8 +7,14 @@ import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use(express.json());
-app.use(cors());
-app.use(cookieParser());
+app.use(cors(
+    {
+        origin: [""],
+        methods: ["POST, GET"],
+        credentials: true
+    }
+))
+//app.use(cookieParser());
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -17,6 +23,6 @@ const db = mysql.createConnection({
     database: "signup"
 })
 
-app.listen(5000, () => {
+app.listen(8081, () => {
     console.log("Running...");
 })
