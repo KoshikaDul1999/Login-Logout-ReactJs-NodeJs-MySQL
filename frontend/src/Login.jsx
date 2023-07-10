@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 export default function Login() {
 
@@ -8,10 +9,20 @@ export default function Login() {
         password: ''
     })
 
+    const navigate = useNavigate()
+
+    axios.defaults.withCredentials = true;
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('')
-        .then(res => console.log(res))
+        axios.post('', values)
+        .then(res => {
+            if(res.data.Status === "Success"){
+                navigate('/')
+            } else {
+                alert(res.data.Message)
+            }
+        })
         .catch(err => console.log(err));
     }
 

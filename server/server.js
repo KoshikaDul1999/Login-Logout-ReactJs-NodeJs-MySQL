@@ -7,6 +7,7 @@ import cookieParser from 'cookie-parser';
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 app.use(cors(
     {
         origin: [""],
@@ -14,7 +15,6 @@ app.use(cors(
         credentials: true
     }
 ))
-//app.use(cookieParser());
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -31,6 +31,7 @@ app.post('/login', (req, res) => {
             const name = data[0].name;
             const token = jwt.sign({name}, "our-jsonwebtoken-secret-key", {expiresIn: '1d'});
             res.cookie('token', token);
+            return res.json({Status: "Success"});
         } else {
             return res.json({Message: "No Records existed"});
         }
