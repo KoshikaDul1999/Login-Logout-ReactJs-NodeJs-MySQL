@@ -23,6 +23,6 @@ const db = mysql.createConnection({
     database: "signup"
 })
 
-app.listen(8081, () => {
+app.listen(5000, () => {
     console.log("Running...");
 })
